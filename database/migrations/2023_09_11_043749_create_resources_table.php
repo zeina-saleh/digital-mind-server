@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idea_id');
+            $table->string('caption');
+            $table->string('path');
             $table->timestamps();
         });
     }
