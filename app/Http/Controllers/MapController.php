@@ -17,5 +17,9 @@ class MapController extends Controller
         return response()->json($collections);
     }
 
-    
+    public function getIdeas()
+    {
+        $ideas = Idea::withCount('likes')->with(['collection.user'])->get();
+        return response()->json($ideas);
+    }
 }
