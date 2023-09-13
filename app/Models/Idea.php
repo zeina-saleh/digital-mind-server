@@ -13,7 +13,7 @@ class Idea extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'resource_id',
+        'title',
         'collection_id'
     ];
 

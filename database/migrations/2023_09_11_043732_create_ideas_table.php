@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('ideas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('collection_id');
-            $table->unsignedBigInteger('resource_id');
             $table->string('title');
             $table->timestamps();
         });
