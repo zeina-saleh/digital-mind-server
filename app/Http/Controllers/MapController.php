@@ -66,7 +66,6 @@ class MapController extends Controller
             $collection->title = $validatedData['title'];
             $collection->save();
             return response()->json(['message' => 'Collection added successfully', 'collection' => $collection], 200);
-
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -83,7 +82,17 @@ class MapController extends Controller
             $idea->title = $validatedData['title'];
             $idea->save();
             return response()->json(['message' => 'Idea added successfully', 'idea' => $idea], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
+    function deleteIdea($ideaId)
+    {
+        try {
+            $idea = Idea::find($ideaId);
+            $idea->delete();
+            return response()->json(['message' => 'Idea deleted successfully', 'idea' => $idea], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
