@@ -97,4 +97,15 @@ class MapController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    function deleteCollection($collectionId)
+    {
+        try {
+            $collection = Collection::find($collectionId);
+            $collection->delete();
+            return response()->json(['message' => 'Collection deleted successfully', 'collection' => $collection], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
