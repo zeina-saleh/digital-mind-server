@@ -30,13 +30,10 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $user = Auth::user();
         return response()->json([
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
+            'message' => 'Logged in successfully',
+            'token' => $token,
+            'type' => 'bearer',
         ]);
     }
 
@@ -54,9 +51,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $token = Auth::login($user);
         return response()->json([
             'message' => 'User created successfully',
-            'user' => $user
+            'token' => $token,
+            'type' => 'bearer',
         ]);
     }
 
