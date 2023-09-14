@@ -18,17 +18,22 @@ class MapController extends Controller
         return response()->json($collections);
     }
 
-    public function getIdeas()
+    public function getIdeas($ideaId = null)
     {
         $user = Auth::user();
 
-        $ideas = Idea::withCount('likes')->with(['collection.user'])->get();
-        foreach ($ideas as $idea) {
-            $existingLike = Like::where('user_id', $user->id)->where('idea_id', $idea->id)->first();
+        if ($ideaId) {
+            $idea = Idea::find($ideaId);
+            return response()->json(['idea' => $idea]);
+        } else {
+            $ideas = Idea::withCount('likes')->with(['collection.user'])->get();
+            foreach ($ideas as $idea) {
+                $existingLike = Like::where('user_id', $user->id)->where('idea_id', $idea->id)->first();
 
-            $idea->liked = !is_null($existingLike);
+                $idea->liked = !is_null($existingLike);
+            }
+            return response()->json($ideas);
         }
-        return response()->json($ideas);
     }
 
     public function likeIdea(Request $request, $ideaId)
