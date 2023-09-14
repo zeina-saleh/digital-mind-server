@@ -54,18 +54,24 @@ class MapController extends Controller
         return response()->json(['idea' => $idea]);
     }
 
-    function createCollection(Request $request)
+    function createCollection(Request $request, $collectionId = null)
     {
         $user = Auth::user();
         try {
             $validatedData = $request->validate([
                 'title' => 'required|string'
             ]);
-            $collection = new Collection();
+
+            if ($collectionId) {
+                $collection = Collection::find($collectionId);
+            } else {
+                $collection = new Collection;
+            }
+
             $collection->user_id = $user->id;
             $collection->title = $validatedData['title'];
             $collection->save();
-            return response()->json(['message' => 'Collection added successfully', 'collection' => $collection], 200);
+            return response()->json(['collection' => $collection], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
