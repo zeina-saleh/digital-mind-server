@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tags', function (Blueprint $table) {
+        Schema::create('text_resources', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('idea_id');
+            $table->string('text');
+            $table->string('caption')->nullable();
+            $table->timestamps();
             $table->foreign('idea_id')->references('id')->on('ideas')->onDelete('cascade');
         });
     }
@@ -21,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('text_resources');
     }
 };

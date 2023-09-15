@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('idea_id');
-            $table->string('text');
-            $table->timestamps();
-        });
+        Schema::rename('resources', 'file_resources');
     }
 
     /**
@@ -24,6 +19,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        //
     }
 };
