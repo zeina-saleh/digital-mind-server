@@ -46,7 +46,10 @@ class MapController extends Controller
         if ($existingLike) {
             $existingLike->delete();
             $idea = Idea::withCount('likes')->where('id', $ideaId)->get();
-            return response()->json(['idea' => $idea]);
+            return response()->json([
+                'idea' => $idea,
+                'liked' => false
+            ]);
         }
 
         $like = new Like();
@@ -56,7 +59,10 @@ class MapController extends Controller
 
         $idea = Idea::withCount('likes')->where('id', $ideaId)->get();
 
-        return response()->json(['idea' => $idea]);
+        return response()->json([
+            'idea' => $idea,
+            'liked' => true
+        ]);
     }
 
     function createCollection(Request $request, $collectionId = null)
