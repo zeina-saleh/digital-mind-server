@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Type;
+use App\Models\Idea;
 
 class FileResource extends Model
 {
@@ -20,5 +22,10 @@ class FileResource extends Model
     public function types(): HasOne
     {
         return $this->hasOne(Type::class);
+    }
+
+    public function idea(): BelongsTo
+    {
+        return $this->belongsTo(Idea::class);
     }
 }
