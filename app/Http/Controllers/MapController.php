@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Collection;
 use App\Models\Idea;
 use App\Models\Like;
+use App\Models\TextResource;
+use App\Models\FileResource;
 
 class MapController extends Controller
 {
@@ -121,6 +123,28 @@ class MapController extends Controller
             $collection = Collection::find($collectionId);
             $collection->delete();
             return response()->json(['message' => 'Collection deleted successfully', 'collection' => $collection], 200);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    function addText(Request $request, $ideaId)
+    {
+        try {
+            $validatedData = $request->validate([
+                'text' => 'required|string',
+                'caption' => 'nullable|string',
+                'type_id' => 'required|exists:types,id',
+            ]);
+            $resource = new TextResource();
+            $resource->idea_id = $ideaId;
+            $resource->type_id = $validatedData['type_id'];
+            $resource->text = $validatedData['text'];
+            if ($validatedData['caption']) {
+                $resource->caption = $validatedData['caption'];
+            }
+            $resource->save();
+            return response()->json(['message' => 'Text resource added successfully', 'resource' => $resource], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
