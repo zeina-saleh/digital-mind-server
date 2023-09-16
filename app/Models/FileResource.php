@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Type;
 
-class Resource extends Model
+class FileResource extends Model
 {
     use HasFactory;
     protected $fillable = [
