@@ -11,8 +11,9 @@ class TextResource extends Model
     use HasFactory;
     protected $fillable = [
         'idea_id',
-        'caption',
+        'type_id',
         'text',
+        'caption'
     ];
 
     public function types(): HasOne

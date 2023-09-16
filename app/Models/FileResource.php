@@ -12,6 +12,7 @@ class Resource extends Model
     use HasFactory;
     protected $fillable = [
         'idea_id',
+        'type_id',
         'caption',
         'path',
     ];
