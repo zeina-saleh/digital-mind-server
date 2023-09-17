@@ -25,8 +25,8 @@ class MapController extends Controller
         $user = Auth::user();
 
         if ($ideaId) {
-            $idea = Idea::with(['texts', 'files'])->where('id', $ideaId)->first();
-            return response()->json(['idea' => $idea]);
+            $idea = Idea::with(['text_res', 'file_res'])->where('id', $ideaId)->first();
+            return response()->json($idea);
         } else {
             $ideas = Idea::withCount('likes')->with(['collection.user'])->get();
             foreach ($ideas as $idea) {
