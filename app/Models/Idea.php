@@ -29,12 +29,12 @@ class Idea extends Model
         return $this->belongsTo(Collection::class);
     }
 
-    public function texts(): HasMany
+    public function text_res(): HasMany
     {
         return $this->hasMany(TextResource::class);
     }
 
-    public function files(): HasMany
+    public function file_res(): HasMany
     {
         return $this->hasMany(FileResource::class);
     }
