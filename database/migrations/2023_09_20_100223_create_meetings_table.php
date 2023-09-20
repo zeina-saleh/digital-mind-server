@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('idea_id');
             $table->string('title');
             $table->date('datetime');
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
             $table->foreign('idea_id')->references('id')->on('ideas')->onDelete('cascade');
         });
