@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('text_resources', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idea_id');
-            $table->string('text');
+            $table->text('text');
             $table->string('caption')->nullable();
             $table->timestamps();
             $table->foreign('idea_id')->references('id')->on('ideas')->onDelete('cascade');

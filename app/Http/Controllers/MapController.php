@@ -162,15 +162,17 @@ class MapController extends Controller
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $filename = time() . '_' . $file->getClientOriginalName();
-                if ($request->type_id == 3) $file->storeAs('images', $filename);
-                else $file->storeAs('documents', $filename);
+                $storagePath = $request->type_id == 3 ? 'images' : 'documents';
+
+                $file->storeAs($storagePath, $filename, 'public');
 
                 $resource = new FileResource();
                 $resource->idea_id = $ideaId;
                 $resource->type_id = $request->type_id;
                 $resource->caption = $request->caption;
-                $resource->path = $filename;
+                $resource->path = 'storage/' . $storagePath . '/' . $filename;
                 $resource->save();
+
                 return response()->json(['message' => 'File resource added successfully', 'resource' => $resource], 200);
             }
         } catch (\Throwable $e) {
