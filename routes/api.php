@@ -18,4 +18,5 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('/deleteCollection/{collectionId}', [MapController::class, 'deleteCollection']);
     Route::post('/addResource/text/{ideaId}', [MapController::class, 'addText']);
     Route::post('/addResource/file/{ideaId}', [MapController::class, 'addFile']);
+    Route::post('/createMeeting/{ideaId}', [MapController::class, 'createMeeting']);
 });

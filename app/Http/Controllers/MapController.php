@@ -9,6 +9,7 @@ use App\Models\Idea;
 use App\Models\Like;
 use App\Models\TextResource;
 use App\Models\FileResource;
+use App\Models\Meeting;
 
 class MapController extends Controller
 {
@@ -175,6 +176,27 @@ class MapController extends Controller
 
                 return response()->json(['message' => 'File resource added successfully', 'resource' => $resource], 200);
             }
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    function createMeeting(Request $request, $ideaId)
+    {
+        try {
+            $validatedData = $request->validate([
+                'title' => 'required|string',
+                'date' => 'required|string',
+                'latitude' => 'required|numeric',
+                'longitude' => 'required|numeric',
+            ]);
+            $meeting = new Meeting();
+            $meeting->idea_id = $ideaId;
+            $meeting->title = $validatedData['title'];
+            $meeting->datetime = $validatedData['date'];
+            $meeting->latitude = $validatedData['latitude'];
+            $meeting->logitude = $validatedData['longitude'];
+            $meeting->save();
+            return response()->json(['message' => 'Meeting added successfully', 'meeting' => $meeting], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
