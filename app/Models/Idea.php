@@ -10,6 +10,7 @@ use App\Models\Like;
 use App\Models\Collection;
 use App\Models\TextResource;
 use App\Models\FileResource;
+use App\Models\Meeting;
 
 class Idea extends Model
 {
@@ -37,5 +38,10 @@ class Idea extends Model
     public function file_res(): HasMany
     {
         return $this->hasMany(FileResource::class);
+    }
+
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
     }
 }
