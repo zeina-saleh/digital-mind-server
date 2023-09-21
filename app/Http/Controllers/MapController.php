@@ -66,8 +66,6 @@ class MapController extends Controller
         }
     }
 
-    
-
     function updateScreenshot(Request $request, $ideaId)
     {
         try {
@@ -98,4 +96,5 @@ class MapController extends Controller
         $users = User::all();
         return response()->json($users);
     }
+
 }

@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\IdeasController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\PlannerController;
+use App\Models\Discussion;
 
 Route::post("/login", [AuthController::class, "login"]);
 Route::post("/register", [AuthController::class, "register"]);
@@ -26,5 +28,8 @@ Route::group(["middleware" => "auth:api"], function () {
 
     Route::post('/createMeeting/{ideaId}', [PlannerController::class, 'createMeeting']);
     Route::get('/getDate', [PlannerController::class, 'getDate']);
+
+    Route::post('/createDiscussion/{ideaId}', [ChatsController::class, 'createDiscussion']);
+
 
 });
