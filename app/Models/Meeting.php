@@ -11,6 +11,7 @@ class Meeting extends Model
     use HasFactory;
     protected $fillable = [
         'idea_id',
+        'user_id',
         'title',
         'datetime',
         'latitude',
