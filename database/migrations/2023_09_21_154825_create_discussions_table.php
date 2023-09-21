@@ -18,6 +18,15 @@ return new class extends Migration
             $table->foreign('idea_id')->references('id')->on('ideas')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('discussion_user', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('discussion_id');
+        $table->unsignedBigInteger('user_id');
+
+        $table->foreign('discussion_id')->references('id')->on('discussions')->onDelete('cascade');
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+    });
     }
 
     /**
