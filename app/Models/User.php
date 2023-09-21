@@ -9,7 +9,10 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Collection;
+use App\Models\Message;
+use App\Models\Discussion;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -68,5 +71,10 @@ class User extends Authenticatable implements JWTSubject
     public function collections(): HasMany
     {
         return $this->hasMany(Collection::class);
+    }
+
+    public function messages(): BelongsToMany
+    {
+        return $this->belongsToMany(Discussion::class);
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Collection;
 use App\Models\TextResource;
 use App\Models\FileResource;
 use App\Models\Meeting;
+use App\Models\Discussion;
 
 class Idea extends Model
 {
@@ -43,5 +44,10 @@ class Idea extends Model
     public function meetings(): HasMany
     {
         return $this->hasMany(Meeting::class);
+    }
+
+    public function discussions(): HasMany
+    {
+        return $this->hasMany(Discussion::class);
     }
 }
