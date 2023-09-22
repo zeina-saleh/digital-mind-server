@@ -11,8 +11,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\Collection;
-use App\Models\Message;
 use App\Models\Discussion;
+use App\Models\Message;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -77,8 +77,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Discussion::class);
     }
+    
     public function messages(): HasMany
     {
-        return $this->hasMany(Discussion::class);
+        return $this->hasMany(Message::class);
     }
 }
