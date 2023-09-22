@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('ideas', function (Blueprint $table) {
-            $table->string('path')->after('title')->default('storage/screenshots/logo.svg');
+            $table->string('path')->after('title')->default('storage/images/logo.svg');
         });
     }
 
