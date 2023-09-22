@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use App\Models\Collection;
 use App\Models\Idea;
 use App\Models\Like;
@@ -75,7 +76,10 @@ class MapController extends Controller
             $previousScreenshot = Idea::find($ideaId);
 
             if ($previousScreenshot) {
-                Storage::delete($previousScreenshot->path);
+                $path = $previousScreenshot->path;
+                if ($path != 'storage/images/logo.svg') {
+                    File::delete($path);
+                }
             }
 
             if ($request->hasFile('file')) {
@@ -93,8 +97,9 @@ class MapController extends Controller
 
     function getUsers()
     {
-        $users = User::all();
+        $user = Auth::user();
+
+        $users = User::where('id', '!=', $user->id)->get();
         return response()->json($users);
     }
-
 }
