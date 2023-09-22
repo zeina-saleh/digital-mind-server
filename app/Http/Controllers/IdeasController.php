@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Models\Collection;
 use App\Models\Idea;
 use App\Models\Like;
@@ -26,7 +27,7 @@ class IdeasController extends Controller
             $idea = Idea::with(['text_res', 'file_res'])->where('id', $ideaId)->first();
             return response()->json($idea);
         } else {
-            $ideas = Idea::withCount('likes')->with(['collection.user'])->get();
+            $ideas = Idea::withCount('likes')->with(['collection.user'])->orderBy('created_at', 'desc')->get();
             foreach ($ideas as $idea) {
                 $existingLike = Like::where('user_id', $user->id)->where('idea_id', $idea->id)->first();
 
@@ -44,10 +45,12 @@ class IdeasController extends Controller
         $existingLike = Like::where('user_id', $user->id)->where('idea_id', $idea->id)->first();
 
         if ($existingLike) {
+            $likeId = $existingLike->id;
             $existingLike->delete();
             $idea = Idea::withCount('likes')->where('id', $ideaId)->get();
             return response()->json([
                 'idea' => $idea,
+                'id' => $likeId,
                 'liked' => false
             ]);
         }
@@ -61,6 +64,7 @@ class IdeasController extends Controller
 
         return response()->json([
             'idea' => $idea,
+            'id' => $like->id,
             'liked' => true
         ]);
     }
@@ -114,6 +118,12 @@ class IdeasController extends Controller
     {
         try {
             $idea = Idea::find($ideaId);
+            if ($idea) {
+                $screenshot = $idea->path;
+                if ($screenshot != 'storage/images/logo.svg') {
+                    File::delete($screenshot);
+                }
+            }
             $idea->delete();
             return response()->json(['message' => 'Idea deleted successfully', 'idea' => $idea], 200);
         } catch (\Throwable $e) {
