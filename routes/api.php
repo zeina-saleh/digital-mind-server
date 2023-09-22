@@ -30,6 +30,6 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('/getDate', [PlannerController::class, 'getDate']);
 
     Route::post('/createDiscussion/{ideaId}', [ChatsController::class, 'createDiscussion']);
-
+    Route::get('/getUserDiscussions', [ChatsController::class, 'getUserDiscussions']);
 
 });
