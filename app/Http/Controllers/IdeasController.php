@@ -16,7 +16,9 @@ class IdeasController extends Controller
     {
         $user = Auth::user();
 
-        $collections = Collection::with(['ideas'])->where('user_id', $user->id)->get();
+        $collections = Collection::with(['ideas' => function ($query) {
+            $query->withCount('likes');
+        }])->where('user_id', $user->id)->get();
         return response()->json($collections);
     }
 
@@ -155,11 +157,13 @@ class IdeasController extends Controller
         if ($result->count() > 0) {
             return response()->json(["idea" => $result]);
         } else {
-            $result2 = User::where('name', 'LIKE', '%' . $param . '%')->with('collections.ideas')->get();
+            $userIds = User::where('name', 'LIKE', '%' . $param . '%')->pluck('id');
+            $collectionIds = Collection::whereIn('user_id', $userIds)->pluck('id');
+            $result2 = Idea::whereIn('collection_id', $collectionIds)->paginate(12);
             if ($result2->count() > 0) {
-                return response()->json(["user" => $result2]);
+                return response()->json(["user_ideas" => $result2]);
             } else {
-                return response()->json('Your search returned no results');
+                return response()->json(['no_result' => '[]']);
             }
         }
     }
