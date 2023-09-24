@@ -32,6 +32,6 @@ Route::group(["middleware" => "auth:api"], function () {
 
     Route::post('/createDiscussion/{ideaId}', [ChatsController::class, 'createDiscussion']);
     Route::get('/getUserDiscussions', [ChatsController::class, 'getUserDiscussions']);
-    Route::get('/exitDiscussion/{discussionId}', [ChatsController::class, 'exitDiscussion']);
+    Route::get('/exitDiscussion/{discussionId}/{delete?}', [ChatsController::class, 'exitDiscussion']);
 
 });
