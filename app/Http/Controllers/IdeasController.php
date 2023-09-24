@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\Collection;
 use App\Models\Idea;
 use App\Models\Like;
+use App\Models\User;
 
 class IdeasController extends Controller
 {
@@ -139,6 +140,27 @@ class IdeasController extends Controller
             return response()->json(['message' => 'Collection deleted successfully', 'collection' => $collection], 200);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    function search(Request $request)
+    {
+        $param = $request->input('param');
+
+        if (empty($param)) {
+            return response()->json(["empty" => '[]']);
+        }
+
+        $result = Idea::where('title', 'LIKE', '%' . $param . '%')->paginate(12);
+        if ($result->count() > 0) {
+            return response()->json(["idea" => $result]);
+        } else {
+            $result2 = User::where('name', 'LIKE', '%' . $param . '%')->with('collections.ideas')->get();
+            if ($result2->count() > 0) {
+                return response()->json(["user" => $result2]);
+            } else {
+                return response()->json('Your search returned no results');
+            }
         }
     }
 }
