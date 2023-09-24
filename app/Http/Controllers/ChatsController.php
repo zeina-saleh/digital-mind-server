@@ -21,6 +21,7 @@ class ChatsController extends Controller
 
             $discussion = new Discussion();
             $discussion->idea_id = $ideaId;
+            $discussion->user_id = $user->id;
             $discussion->title = $validatedData['title'];
             $discussion->save();
 
@@ -37,10 +38,11 @@ class ChatsController extends Controller
     {
         $user = Auth::user();
         $discussions = User::find($user->id)->discussions()->with('idea', 'users')->get();
-
         return response()->json([
             "discussions" => $discussions,
-            "authUser" => $user->name
+            "user" => ([
+                "id" => $user->id,
+                "name" => $user->name])
         ]);
     }
 
@@ -64,13 +66,15 @@ class ChatsController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    function exitDiscussion($discussionId)
+    function exitDiscussion($discussionId, $delete=null)
     {
         try {
             $user = Auth::user();
             $discussion = Discussion::find($discussionId);
-            $discussion->users()->detach([$user->id]);
-            $discussion->delete();
+            if($delete) $discussion->delete();
+
+            else $discussion->users()->detach([$user->id]);
+            
             return response()->json($discussion);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 500);
