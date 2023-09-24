@@ -20,6 +20,7 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::post('/addIdea/{collectionId}/{ideaId?}', [IdeasController::class, 'addIdea']);
     Route::get('/deleteIdea/{ideaId}', [IdeasController::class, 'deleteIdea']);
     Route::get('/deleteCollection/{collectionId}', [IdeasController::class, 'deleteCollection']);
+    Route::post('/search', [IdeasController::class, 'search']);
 
     Route::post('/addResource/text/{ideaId}', [MapController::class, 'addText']);
     Route::post('/addResource/file/{ideaId}', [MapController::class, 'addFile']);
@@ -31,5 +32,6 @@ Route::group(["middleware" => "auth:api"], function () {
 
     Route::post('/createDiscussion/{ideaId}', [ChatsController::class, 'createDiscussion']);
     Route::get('/getUserDiscussions', [ChatsController::class, 'getUserDiscussions']);
+    Route::get('/exitDiscussion/{discussionId}', [ChatsController::class, 'exitDiscussion']);
 
 });
