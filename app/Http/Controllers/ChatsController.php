@@ -64,15 +64,16 @@ class ChatsController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
-    /*public function getMessages($discussionId)
+    function exitDiscussion($discussionId)
     {
-        $user = Auth::user();
-        $messages = Message::find($discussionId)->with('user')->get();
-
-        return response()->json([
-            "messages" => $messages,
-            "authUser" => $user->id
-        ]);
-    }*/
+        try {
+            $user = Auth::user();
+            $discussion = Discussion::find($discussionId);
+            $discussion->users()->detach([$user->id]);
+            $discussion->delete();
+            return response()->json($discussion);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
