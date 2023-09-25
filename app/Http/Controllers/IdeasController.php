@@ -30,7 +30,7 @@ class IdeasController extends Controller
             $idea = Idea::with(['text_res', 'file_res'])->where('id', $ideaId)->first();
             return response()->json($idea);
         } else {
-            $ideas = Idea::withCount('likes')->with(['collection.user'])->orderBy('created_at', 'desc')->get();
+            $ideas = Idea::withCount('likes')->with(['collection.user'])->orderBy('created_at', 'desc')->paginate(4);
             foreach ($ideas as $idea) {
                 $existingLike = Like::where('user_id', $user->id)->where('idea_id', $idea->id)->first();
 
@@ -153,13 +153,13 @@ class IdeasController extends Controller
             return response()->json(["empty" => '[]']);
         }
 
-        $result = Idea::where('title', 'LIKE', '%' . $param . '%')->paginate(12);
+        $result = Idea::where('title', 'LIKE', '%' . $param . '%')->paginate(16);
         if ($result->count() > 0) {
             return response()->json(["idea" => $result]);
         } else {
             $userIds = User::where('name', 'LIKE', '%' . $param . '%')->pluck('id');
             $collectionIds = Collection::whereIn('user_id', $userIds)->pluck('id');
-            $result2 = Idea::whereIn('collection_id', $collectionIds)->paginate(12);
+            $result2 = Idea::whereIn('collection_id', $collectionIds)->paginate(16);
             if ($result2->count() > 0) {
                 return response()->json(["user_ideas" => $result2]);
             } else {
