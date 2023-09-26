@@ -25,18 +25,21 @@ class IdeasController extends Controller
     public function getIdeas($ideaId = null)
     {
         $user = Auth::user();
-
+        try{
         if ($ideaId) {
             $idea = Idea::with(['text_res', 'file_res'])->where('id', $ideaId)->first();
             return response()->json($idea);
         } else {
-            $ideas = Idea::withCount('likes')->with(['collection.user'])->orderBy('created_at', 'desc')->paginate(4);
+            $ideas = Idea::withCount('likes')->with(['collection.user'])->orderBy('created_at', 'desc')->paginate(16);
             foreach ($ideas as $idea) {
                 $existingLike = Like::where('user_id', $user->id)->where('idea_id', $idea->id)->first();
 
                 $idea->liked = !is_null($existingLike);
             }
             return response()->json($ideas);
+            }
+        }  catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
