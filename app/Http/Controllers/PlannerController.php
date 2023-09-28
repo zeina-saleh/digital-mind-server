@@ -39,8 +39,12 @@ class PlannerController extends Controller
         $plans = Meeting::where('user_id', $user_id)->get();
         $schedule = $plans->map(function ($plan) {
             return [
+                "id" => $plan->id,
                 "date" => $plan->datetime,
+                "time" => $plan->datetime,
                 "title" => $plan->title,
+                "latitude" => $plan->latitude,
+                "longitude" => $plan->longitude
             ];
         });
 
