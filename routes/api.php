@@ -6,9 +6,10 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\IdeasController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\PlannerController;
-use App\Models\Discussion;
+use App\Http\Controllers\FCMController;
+use App\Models\FCMToken;
 
-Route::post("/login", [AuthController::class, "login"]);
+Route::post("/userlogin", [AuthController::class, "login"]);
 Route::post("/register", [AuthController::class, "register"]);
 
 Route::group(["middleware" => "auth:api"], function () {
@@ -34,4 +35,6 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('/getUserDiscussions', [ChatsController::class, 'getUserDiscussions']);
     Route::get('/exitDiscussion/{discussionId}/{delete?}', [ChatsController::class, 'exitDiscussion']);
 
+    Route::post('/saveToken', [FCMController::class, 'saveToken']);
+    Route::post('/sendNotification', [FCMController::class, 'sendNotification']);
 });
