@@ -95,11 +95,13 @@ class MapController extends Controller
         }
     }
 
-    function getUsers()
-    {
-        $user = Auth::user();
+    public function getUsers()
+{
+    $user = Auth::user();
+    $excludedEmail = 'charbel@gmail.com';
 
-        $users = User::where('id', '!=', $user->id)->get();
-        return response()->json($users);
-    }
+    $users = User::where('id', '!=', $user->id)->where('email', '!=', $excludedEmail)->get();
+
+    return response()->json($users);
+}
 }
